@@ -93,6 +93,10 @@
 \newif\iforgname
 \newif\ifdetails
 \newif\ifauthordetails
+\newif\ifcontents
+
+% set true by default
+\contentstrue
 
 \renewcommand\title[1]{\newcommand\thetitle{#1} \titletrue}
 \renewcommand\author[1]{\newcommand\theauthor{#1} \authortrue}
@@ -153,8 +157,7 @@
                 \ifauthordetails\theauthordetails\fi
             \end{flushright}
         \end{minipage}
-
-        \tableofcontents
+        \ifcontents\tableofcontents\fi
         
     \end{titlepage}
 }
