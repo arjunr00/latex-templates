@@ -1,0 +1,222 @@
+\ProvidesPackage{report}
+
+\usepackage{etoolbox}
+\usepackage[english]{babel}
+\usepackage{url}
+\usepackage[utf8x]{inputenc}
+\usepackage{amsmath}
+\usepackage{filecontents}
+\usepackage[urlcolor=blue]{hyperref}
+\usepackage{graphicx}
+\graphicspath{{./}}
+\usepackage{parskip}
+\usepackage{textcomp}
+\usepackage[section]{placeins}
+\usepackage{fancyhdr}
+\usepackage{vmargin}
+\usepackage[T1]{fontenc}
+\usepackage[scaled=0.85]{beramono}
+\usepackage{caption}
+\usepackage{float}
+\usepackage[thinc]{esdiff}
+\usepackage[table,xcdraw]{xcolor}
+\usepackage[hypcap=false]{caption}
+\usepackage{wrapfig}
+\usepackage{siunitx}
+\usepackage{longtable,tabulary}
+\usepackage[bottom]{footmisc}
+\usepackage[table,xcdraw]{xcolor}
+\usepackage{listings}
+
+% Package configuration
+\lstset{
+    backgroundcolor=\color[rgb]{0.93,0.93,0.93},
+    basicstyle=\ttfamily,
+    commentstyle=\color[rgb]{0, 0.4, 0},
+    keywordstyle=\color{blue},
+    stringstyle=\color{brown},
+    showstringspaces=false,
+    escapeinside={(*@}{@*)},
+    columns=flexible,
+    keepspaces=true,
+    breaklines=true,
+    numbers=left,
+    frame=single,
+    tabsize=4,
+    breakatwhitespace=false,
+    numberstyle=\small\color{gray}\ttfamily
+}
+\hypersetup{
+    colorlinks   = true,
+    linkcolor    = blue,
+    citecolor    = blue
+}
+
+% Setup
+\setmarginsrb{2 cm}{1 cm}{2 cm}{1 cm}{1 cm}{1.5 cm}{1 cm}{1.5 cm}
+\captionsetup{font=small}
+\bibliographystyle{apalike}
+
+% Utility commands
+\renewcommand{\lstlistingname}{Code Block}
+\newcommand{\startbody}{%
+    \renewcommand{\thesection}{\arabic{section}}
+}
+\newcommand{\startappendices}{%
+    \setcounter{section}{0}
+    \renewcommand{\thesection}{\Alph{section}}
+}
+\renewcommand{\appendix}[2]{%
+    \section{#1}\label{#2}
+    \renewcommand{\thefigure}{\ref*{#2}.\arabic{figure}}
+    \renewcommand{\thelstlisting}{\ref*{#2}.\arabic{lstlisting}}
+    \renewcommand{\thetable}{\ref*{#2}.\arabic{table}}
+    \renewcommand{\lstlistingname}{Listing}
+    \setcounter{figure}{0}
+    \setcounter{lstlisting}{0}
+    \setcounter{table}{0}
+}
+\newcommand{\bib}{\bibliography{\jobname}}
+
+% Header stuff
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{\theauthor}
+\lhead{\thetitle}
+\cfoot{\thepage}
+
+% If statements for if these title page components exist
+\newif\iftitle
+\newif\ifauthor
+\newif\ifdate
+\newif\ifproj
+\newif\iforgname
+\newif\ifdetails
+\newif\ifauthordetails
+
+\renewcommand\title[1]{\newcommand\thetitle{#1} \titletrue}
+\renewcommand\author[1]{\newcommand\theauthor{#1} \authortrue}
+\renewcommand\date[1]{\newcommand\thedate{#1} \datetrue}
+\newcommand\project[1]{\newcommand\theproj{#1} \projtrue}
+\newcommand\orgname[1]{\newcommand\theorgname{#1} \orgnametrue}
+\newcommand\details[1]{\newcommand\thedetails{#1} \detailstrue}
+\newcommand\authordetails[1]{\newcommand\theauthordetails{#1} \authordetailstrue}
+
+% For long tables
+\makeatletter
+\newcommand*\TY@cap@gobble[2][]{\\}% from ltxtable (adjusted)
+\def\ltabulary{%
+    \def\caption{% from ltxtable (adjusted)
+        \@ifstar\TY@cap@gobble\TY@cap@gobble}
+    \def\endfirsthead{\\}%
+    \def\endhead{\\}%
+    \def\endfoot{\\}%
+    \def\endlastfoot{\\}%
+    \def\tabulary{%
+        \def\TY@final{%
+    \def\endfirsthead{\LT@end@hd@ft\LT@firsthead}%
+    \def\endhead{\LT@end@hd@ft\LT@head}%
+    \def\endfoot{\LT@end@hd@ft\LT@foot}%
+    \def\endlastfoot{\LT@end@hd@ft\LT@lastfoot}%
+    \longtable}%
+        \let\endTY@final\endlongtable
+        \TY@tabular}%
+    \dimen@\columnwidth
+    \advance\dimen@-\LTleft
+    \advance\dimen@-\LTright
+    \tabulary\dimen@}
+\def\endltabulary{\endtabulary}
+\makeatother
+
+% Title page
+\newcommand{\mktitle}{%
+    \begin{titlepage}
+        \centering
+        \vspace*{0.5 cm}
+        \begin{center}
+            \textsc{\Large {\iforgname\theorgname\fi}}\\[2.0 cm]
+        \end{center}
+        \textsc{\Large {\ifproj\theproj\fi}: \\[0.3cm]
+        \iftitle\thetitle\else{\texttt{Missing \textbackslash{title}}}\fi }\\[0.4cm]
+        \textsc{\large \thedate}\\[1 cm]
+
+        \begin{minipage}{0.4\textwidth}
+            \begin{flushleft} \large
+                \ifdetails\emph{Details} \\
+                {\thedetails}\fi
+            \end{flushleft}
+        \end{minipage}~
+        \begin{minipage}{0.4\textwidth}
+            \begin{flushright} \large%
+                \ifauthor\emph{Author}\else\texttt{Missing \textbackslash{author}}\fi \\
+                \theauthor \\
+                \ifauthordetails\theauthordetails\fi
+            \end{flushright}
+        \end{minipage}
+
+        \tableofcontents
+        
+    \end{titlepage}
+}
+
+% Code snippet from file
+% Args:
+%   1. (Optional) additional options
+%   2. File name
+%   3. Caption
+%   4. Label (automatically prepended with 'code:'
+\newcommand{\codesnippet}[4][]{%
+    \begin{figure}[H]
+        \centering
+        \lstinputlisting[#1]{#2}
+        \captionof{lstlisting}{#3}
+        \label{code:#4}
+    \end{figure}
+}
+
+% Code block
+% Args:
+%   1. (Optional) Additional options
+%   2. Label (automatically prepended with 'code:'
+%   3. Code
+\newcommand{\codeblock}[3][]{%
+    \begin{figure}[H]
+        \centering
+        \begin{lstlisting}[numbers=none, #1]
+#3
+        \end{lstlisting}
+        \label{code:#2}
+    \end{figure}
+}
+
+% Image
+% Args:
+%   1. (Optional) Additional options
+%   2. Image file
+%   3. Caption
+%   4. Label (automatically prepended with 'fig:'
+\newcommand{\img}[4][]{%
+    \begin{figure}[h]
+        \centering
+        \includegraphics[width=\linewidth, #1]{#2}
+        \captionof{figure}{#3}
+        \label{fig:#4}
+    \end{figure}
+}
+
+% Diagram
+% Args:
+%   1. (Optional) Additional options
+%   2. Tikz code
+%   3. Caption
+%   4. Label (automatically prepended with 'fig:'
+\newcommand{\diagram}[4][]{%
+    \begin{figure}[h]
+        \centering
+        \begin{tikzpicture}
+            #2
+        \end{tikzpicture}
+        \captionof{figure}{#3}
+        \label{fig:#4}
+    \end{figure}
+}
