@@ -8,7 +8,6 @@
 \usepackage{filecontents}
 \usepackage[urlcolor=blue]{hyperref}
 \usepackage{graphicx}
-\graphicspath{{./}}
 \usepackage{parskip}
 \usepackage{textcomp}
 \usepackage[section]{placeins}
@@ -27,8 +26,13 @@
 \usepackage[bottom]{footmisc}
 \usepackage[table,xcdraw]{xcolor}
 \usepackage{listings}
+\usepackage{ulem}
+\usepackage{tikz}
+\usepackage{tikz-cd}
+\usepackage{pgfplots}
 
 % Package configuration
+\graphicspath{{./}}
 \lstset{
     backgroundcolor=\color[rgb]{0.93,0.93,0.93},
     basicstyle=\ttfamily,
@@ -51,11 +55,11 @@
     linkcolor    = blue,
     citecolor    = blue
 }
+\pgfplotsset{width=0.7\linewidth,compat=1.9}
 
 % Setup
 \setmarginsrb{2 cm}{1 cm}{2 cm}{1 cm}{1 cm}{1.5 cm}{1 cm}{1.5 cm}
 \captionsetup{font=small}
-\bibliographystyle{apalike}
 
 % Utility commands
 \renewcommand{\lstlistingname}{Code Block}
@@ -76,7 +80,7 @@
     \setcounter{lstlisting}{0}
     \setcounter{table}{0}
 }
-\newcommand{\bib}{\bibliography{\jobname}}
+\newcommand{\bib}[1]{\bibliographystyle{#1}\bibliography{\jobname}}
 
 % Header stuff
 \pagestyle{fancy}
@@ -133,6 +137,7 @@
 \makeatother
 
 % Title page
+\addto\captionsenglish{\renewcommand\contentsname{}}
 \newcommand{\mktitle}{%
     \begin{titlepage}
         \centering
@@ -169,7 +174,7 @@
 %   3. Caption
 %   4. Label (automatically prepended with 'code:'
 \newcommand{\codesnippet}[4][]{%
-    \begin{figure}[H]
+    \begin{figure}[h]
         \centering
         \lstinputlisting[#1]{#2}
         \captionof{lstlisting}{#3}
@@ -183,10 +188,10 @@
 %   2. Label (automatically prepended with 'code:'
 %   3. Code
 \newcommand{\codeblock}[3][]{%
-    \begin{figure}[H]
+    \begin{figure}[h]
         \centering
-        \begin{lstlisting}[numbers=none, #1]
-#3
+        \begin{lstlisting}[numbers=none, #1]^^J
+(*@{#3}@*)^^J
         \end{lstlisting}
         \label{code:#2}
     \end{figure}
@@ -219,6 +224,21 @@
         \begin{tikzpicture}
             #2
         \end{tikzpicture}
+        \captionof{figure}{#3}
+        \label{fig:#4}
+    \end{figure}
+}
+
+% Math Diagram
+% Args:
+%   1. (Optional) Additional options
+%   2. Tikz code
+%   3. Caption
+%   4. Label (automatically prepended with 'fig:'
+\newcommand{\mathdiag}[4][]{%
+    \begin{figure}[h]
+        \centering
+        \[\begin{tikzcd}#2\end{tikzcd}\]
         \captionof{figure}{#3}
         \label{fig:#4}
     \end{figure}
