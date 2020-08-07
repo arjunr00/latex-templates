@@ -69,6 +69,7 @@
 \newcommand{\startappendices}{%
     \setcounter{section}{0}
     \renewcommand{\thesection}{\Alph{section}}
+    \renewcommand{\lstlistingname}{File}
 }
 \renewcommand{\appendix}[2]{%
     \section{#1}\label{#2}
@@ -81,6 +82,9 @@
     \setcounter{table}{0}
 }
 \newcommand{\bib}[1]{\bibliographystyle{#1}\bibliography{\jobname}}
+
+\let\emph\relax
+\DeclareTextFontCommand{\emph}{\it}
 
 % Header stuff
 \pagestyle{fancy}
@@ -135,6 +139,16 @@
     \tabulary\dimen@}
 \def\endltabulary{\endtabulary}
 \makeatother
+
+% vertically align tables
+\makeatletter
+\def\TY@box@v#1{%
+      $\vcenter \@startpbox{\csname TY@F\the\TY@count\endcsname}%
+              #1\arraybackslash\tyformat
+                              \insert@column\@endpbox$}
+\makeatother
+
+\renewcommand\arraystretch{1.5} % change as needed
 
 % Title page
 \addto\captionsenglish{\renewcommand\contentsname{}}
@@ -191,7 +205,7 @@
     \begin{figure}[h]
         \centering
         \begin{lstlisting}[numbers=none, #1]^^J
-(*@{#3}@*)^^J
+(*@ {#3} @*)^^J
         \end{lstlisting}
         \label{code:#2}
     \end{figure}
@@ -210,6 +224,22 @@
         \captionof{figure}{#3}
         \label{fig:#4}
     \end{figure}
+}
+
+% Wrapped Image
+% Args:
+%   1. (Optional) Additional options
+%   2. Wrapping option
+%   3. Image file
+%   4. Caption
+%   5. Label (automatically prepended with 'fig:'
+\newcommand{\wrapimg}[5]{%
+    \begin{wrapfigure}{#2}{#1}
+        \centering
+        \includegraphics[width=\linewidth]{#3}
+        \captionof{figure}{#4}
+        \label{fig:#5}
+    \end{wrapfigure}
 }
 
 % Diagram
@@ -242,4 +272,16 @@
         \captionof{figure}{#3}
         \label{fig:#4}
     \end{figure}
+}
+
+% Table
+\newcommand{\tableat}[5]{%
+    \begin{minipage}{#1}
+        \centering
+        \begin{tabulary}{#1}{#2}
+            #3
+        \end{tabulary}
+        \captionof{table}{#4}
+        \label{table:#5}
+    \end{minipage}
 }
