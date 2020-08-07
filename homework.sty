@@ -77,23 +77,29 @@
 \newcommand{\T}{\mathrm{T}}
 \newcommand{\F}{\mathrm{F}}
 
-\newcommand{\Pr}{\mathrm{Pr}}
+\newcommand{\prob}{\mathrm{Pr}}
 
 \newcommand{\red}[1]{{\color{red}#1}}
 \newcommand{\mred}[1]{{\text{\color{red}#1}}}
 \newcommand{\blue}[1]{{\color{blue}#1}}
 \newcommand{\mblue}[1]{{\text{\color{blue}#1}}}
 
+% Theorem environment
 \newenvironment{theorem}[2][Theorem]{\begin{trivlist}
 \item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+% Lemma environment
 \newenvironment{lemma}[2][Lemma]{\begin{trivlist}
 \item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+% Exercise environment
 \newenvironment{exercise}[2][]{\begin{trivlist}
 \item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+% Reflection environment
 \newenvironment{reflection}[2][Reflection]{\begin{trivlist}
 \item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+% Proposition environment
 \newenvironment{proposition}[2][Proposition]{\begin{trivlist}
 \item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+% Corollary environment
 \newenvironment{corollary}[2][Corollary]{\begin{trivlist}
 \item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
 
@@ -151,7 +157,7 @@
     \end{figure}
 }
 
-% Code block
+% Code block (note: DOESN'T WORK)
 % Args:
 %   1. (Optional) Additional options
 %   2. Label (automatically prepended with 'code:'
