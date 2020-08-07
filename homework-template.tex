@@ -1,0 +1,53 @@
+\documentclass[12pt]{article}
+
+\usepackage{homework} % Make sure homework.sty is in the same directory as your .tex file
+
+\begin{document}
+\title{Homework Title}
+\author{A. Person}
+\date{Jan 1, 1970}
+
+\maketitle
+
+\begin{exercise}{1} % Does not have to be a number
+    Here is an exercise.
+
+    \begin{theorem}{Label}
+        Here is a theorem.
+    \end{theorem}
+
+    \begin{proof}
+        Here is a proof.
+        See the little box at the end?
+    \end{proof}
+
+    \begin{lemma}{Label}
+        Here is a lemma too.
+    \end{lemma}
+
+    The \texttt{reflection}, \texttt{proposition}, and \texttt{corollary} environments work the same way.
+\end{exercise}
+
+\begin{exercise}{2}
+    Here is another exercise.
+    Some nifty math shortcut commands are:
+    \begin{itemize}
+        \item Set of natural numbers: $\N$
+        \item Set of integers: $\Z$
+        \item Probability: $\prob(A)$
+    \end{itemize}
+
+    See \texttt{homework.sty} if you want to add more similar shortcuts.
+
+    Say you want to highlight some text. These commands make it \red{very easy} \blue{to do so}.
+    If you want to highlight text in a math environment:
+    \begin{align*}
+        a^2 + b^2 = c^2 \quad \mred{(see? } \mblue{easy.)}
+    \end{align*}
+
+    See \texttt{homework.sty} if you want to add more colors.
+    
+    
+\end{exercise}
+
+\end{document}
