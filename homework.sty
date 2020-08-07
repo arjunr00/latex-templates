@@ -1,0 +1,242 @@
+\ProvidesPackage{homework}
+
+\usepackage{etoolbox}
+\usepackage[english]{babel}
+\usepackage{url}
+\usepackage[utf8x]{inputenc}
+\usepackage{amsmath,amsthm,amssymb}
+\usepackage[margin=1in]{geometry}
+\usepackage{filecontents}
+\usepackage[urlcolor=blue]{hyperref}
+\usepackage{graphicx}
+\usepackage{parskip}
+\usepackage{textcomp}
+\usepackage[section]{placeins}
+\usepackage{fancyhdr}
+\usepackage[T1]{fontenc}
+\usepackage[scaled=0.85]{beramono}
+\usepackage{caption}
+\usepackage{float}
+\usepackage[thinc]{esdiff}
+\usepackage[table,xcdraw]{xcolor}
+\usepackage[hypcap=false]{caption}
+\usepackage{wrapfig}
+\usepackage{siunitx}
+\usepackage{longtable,tabulary}
+\usepackage[bottom]{footmisc}
+\usepackage[table,xcdraw]{xcolor}
+\usepackage{listings}
+\usepackage{ulem}
+\usepackage{tikz}
+\usepackage{tikz-cd}
+\usepackage{pgfplots}
+\usepackage{enumitem}
+
+% Package configuration
+\graphicspath{{./}}
+\lstset{
+    backgroundcolor=\color[rgb]{0.93,0.93,0.93},
+    basicstyle=\ttfamily,
+    commentstyle=\color[rgb]{0, 0.4, 0},
+    keywordstyle=\color{blue},
+    stringstyle=\color{brown},
+    showstringspaces=false,
+    escapeinside={(*@}{@*)},
+    columns=flexible,
+    keepspaces=true,
+    breaklines=true,
+    numbers=left,
+    frame=single,
+    tabsize=4,
+    breakatwhitespace=false,
+    numberstyle=\small\color{gray}\ttfamily
+}
+\hypersetup{
+    colorlinks   = true,
+    linkcolor    = blue,
+    citecolor    = blue
+}
+\pgfplotsset{width=0.7\linewidth,compat=1.9}
+
+% Setup
+\captionsetup{font=small}
+
+% Utility commands
+\renewcommand{\lstlistingname}{Code Block}
+\newcommand{\startbody}{%
+    \renewcommand{\thesection}{\arabic{section}}
+}
+\newcommand{\bib}[1]{\bibliographystyle{#1}\bibliography{\jobname}}
+
+\let\emph\relax
+\DeclareTextFontCommand{\emph}{\it}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+
+\newcommand{\T}{\mathrm{T}}
+\newcommand{\F}{\mathrm{F}}
+
+\newcommand{\Pr}{\mathrm{Pr}}
+
+\newcommand{\red}[1]{{\color{red}#1}}
+\newcommand{\mred}[1]{{\text{\color{red}#1}}}
+\newcommand{\blue}[1]{{\color{blue}#1}}
+\newcommand{\mblue}[1]{{\text{\color{blue}#1}}}
+
+\newenvironment{theorem}[2][Theorem]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{lemma}[2][Lemma]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{exercise}[2][]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{reflection}[2][Reflection]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{proposition}[2][Proposition]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{corollary}[2][Corollary]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+
+\setlength\parindent{0pt}
+\setlength{\parskip}{1em}
+
+% For long tables
+\makeatletter
+\newcommand*\TY@cap@gobble[2][]{\\}% from ltxtable (adjusted)
+\def\ltabulary{%
+    \def\caption{% from ltxtable (adjusted)
+        \@ifstar\TY@cap@gobble\TY@cap@gobble}
+    \def\endfirsthead{\\}%
+    \def\endhead{\\}%
+    \def\endfoot{\\}%
+    \def\endlastfoot{\\}%
+    \def\tabulary{%
+        \def\TY@final{%
+    \def\endfirsthead{\LT@end@hd@ft\LT@firsthead}%
+    \def\endhead{\LT@end@hd@ft\LT@head}%
+    \def\endfoot{\LT@end@hd@ft\LT@foot}%
+    \def\endlastfoot{\LT@end@hd@ft\LT@lastfoot}%
+    \longtable}%
+        \let\endTY@final\endlongtable
+        \TY@tabular}%
+    \dimen@\columnwidth
+    \advance\dimen@-\LTleft
+    \advance\dimen@-\LTright
+    \tabulary\dimen@}
+\def\endltabulary{\endtabulary}
+\makeatother
+
+% vertically align tables
+\makeatletter
+\def\TY@box@v#1{%
+      $\vcenter \@startpbox{\csname TY@F\the\TY@count\endcsname}%
+              #1\arraybackslash\tyformat
+                              \insert@column\@endpbox$}
+\makeatother
+
+\renewcommand\arraystretch{1.5} % change as needed
+
+% Code snippet from file
+% Args:
+%   1. (Optional) additional options
+%   2. File name
+%   3. Caption
+%   4. Label (automatically prepended with 'code:'
+\newcommand{\codesnippet}[4][]{%
+    \begin{figure}[h]
+        \centering
+        \lstinputlisting[#1]{#2}
+        \captionof{lstlisting}{#3}
+        \label{code:#4}
+    \end{figure}
+}
+
+% Code block
+% Args:
+%   1. (Optional) Additional options
+%   2. Label (automatically prepended with 'code:'
+%   3. Code
+\newcommand{\codeblock}[3][]{%
+    \begin{figure}[h]
+        \centering
+        \begin{lstlisting}[numbers=none, #1]^^J
+(*@ {#3} @*)^^J
+        \end{lstlisting}
+        \label{code:#2}
+    \end{figure}
+}
+
+% Image
+% Args:
+%   1. (Optional) Additional options
+%   2. Image file
+%   3. Caption
+%   4. Label (automatically prepended with 'fig:'
+\newcommand{\img}[4][]{%
+    \begin{figure}[h]
+        \centering
+        \includegraphics[width=\linewidth, #1]{#2}
+        \captionof{figure}{#3}
+        \label{fig:#4}
+    \end{figure}
+}
+
+% Wrapped Image
+% Args:
+%   1. (Optional) Additional options
+%   2. Wrapping option
+%   3. Image file
+%   4. Caption
+%   5. Label (automatically prepended with 'fig:'
+\newcommand{\wrapimg}[5]{%
+    \begin{wrapfigure}{#2}{#1}
+        \centering
+        \includegraphics[width=\linewidth]{#3}
+        \captionof{figure}{#4}
+        \label{fig:#5}
+    \end{wrapfigure}
+}
+
+% Diagram
+% Args:
+%   1. (Optional) Additional options
+%   2. Tikz code
+%   3. Caption
+%   4. Label (automatically prepended with 'fig:'
+\newcommand{\diagram}[4][]{%
+    \begin{figure}[h]
+        \centering
+        \begin{tikzpicture}
+            #2
+        \end{tikzpicture}
+        \captionof{figure}{#3}
+        \label{fig:#4}
+    \end{figure}
+}
+
+% Math Diagram
+% Args:
+%   1. (Optional) Additional options
+%   2. Tikz code
+%   3. Caption
+%   4. Label (automatically prepended with 'fig:'
+\newcommand{\mathdiag}[4][]{%
+    \begin{figure}[h]
+        \centering
+        \[\begin{tikzcd}#2\end{tikzcd}\]
+        \captionof{figure}{#3}
+        \label{fig:#4}
+    \end{figure}
+}
+
+% Table
+\newcommand{\tableat}[5]{%
+    \begin{minipage}{#1}
+        \centering
+        \begin{tabulary}{#1}{#2}
+            #3
+        \end{tabulary}
+        \captionof{table}{#4}
+        \label{table:#5}
+    \end{minipage}
+}
